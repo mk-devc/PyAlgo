@@ -21,21 +21,20 @@ Traversing the tree is performed  is performed using 4 different ways. 3 steps i
     traverse left
     traverse right
     
-'''
 
 # Inorder traversal
 
-'''
+
 
     traverse left
     visit
     traverse right
 
-'''
+
 
 # Postorder traversal
 
-'''
+
 
     traverse left
     traverse right
