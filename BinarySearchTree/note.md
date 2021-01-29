@@ -16,7 +16,7 @@ Traversing the tree is performed  is performed using 4 different ways. 3 steps i
 # Preorder traversal
 
 '''
-function preorder:
+
     visit
     traverse left
     traverse right
@@ -25,18 +25,15 @@ function preorder:
 
 # Inorder traversal
 
-'''
-function preorder:
     
     traverse left
     visit
     traverse right
-'''
+
 
 # Postorder traversal
 
 '''
-function postorder:
     
     traverse left
     traverse right
