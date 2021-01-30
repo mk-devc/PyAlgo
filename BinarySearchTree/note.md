@@ -17,32 +17,32 @@ Traversing the tree is performed  is performed using 4 different ways. 3 steps i
 
 ## Preorder traversal
 
-'''
+```
 
     visit
     traverse left
     traverse right
-
+```
 
 
 ## Inorder traversal
 
-'''
+```
 
     traverse left
     visit
     traverse right
-
+```
 
 
 ## Postorder traversal
 
-'''
+```
 
     traverse left
     traverse right
     visit
-
+```
 
 
 ## Levelorder traversal
@@ -57,7 +57,10 @@ Coming soon
 If the key is present just replace it's value like a symbol table. If the key isnt there add a new node to the bst.
 
 Steps taken in inserting into the binary search tree:
-'''
+
+
+```
+
 function put(node,key,val):
       if x is null -> create new Node
       cmp<-compare the key being inserted with the key being traversed
@@ -71,8 +74,7 @@ function put(node,key,val):
       else:
          x.val=val
       return x
-    
-      
+```     
 
 
 
