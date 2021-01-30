@@ -22,7 +22,7 @@ Traversing the tree is performed  is performed using 4 different ways. 3 steps i
     visit
     traverse left
     traverse right
- ''
+
 
 
 ## Inorder traversal
@@ -71,7 +71,7 @@ function put(node,key,val):
       else:
          x.val=val
       return x
-'''     
+    
       
 
 
