@@ -21,6 +21,7 @@ function toBinary(num):
 
 # Bitwise Operations
 
+![Credit: https://www.hackerearth.com/practice/basic-programming/bit-manipulation/basics-of-bit-manipulation/tutorial/](https://github.com/MK-1729/PyAlgo/blob/main/BitManipulation/pic.PNG)
 
 
 
