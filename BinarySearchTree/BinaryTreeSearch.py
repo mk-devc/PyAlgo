@@ -81,7 +81,7 @@ class Tree(object):
             t.val=root.val
             root.val=temp
             #
-            self.deleteMin(t.right)
+            t.right=self.deleteMin(t.right)
             root=t
             
             '''
