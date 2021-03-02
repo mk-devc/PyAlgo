@@ -18,36 +18,46 @@ Traversing the tree is performed  is performed using 4 different ways. 3 steps i
 ## Preorder traversal
 
 ```
-
     visit
     traverse left
     traverse right
 ```
 
+Purpose of why you would wanna use this is to make a complete duplicate of a binary tree structure in a 1d array.
 
 ## Inorder traversal
 
 ```
-
     traverse left
     visit
     traverse right
 ```
 
+Purpose of using this could be to check if the bst is in order by ascending.
 
 ## Postorder traversal
 
 ```
-
     traverse left
     traverse right
     visit
 ```
 
+Purpose of why you would wanna use this is to delete the parent node of the bst or delete a tree.
 
 ## Levelorder traversal
 
-Coming soon
+```
+     # operations are performed recurisvely
+     
+     if child is empty exit 
+     
+     check left is not empty and add left to queue
+     check right is not empty and add right to the queue
+     
+      parent is empty replace with child 
+     
+```     
 
 # Ordered operations in BST
 
