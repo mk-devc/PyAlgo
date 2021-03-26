@@ -1,7 +1,53 @@
 # Union Find
 
+To put it basically, if there is a set of objects we would like to perform 2 operations. Union and Find are the methods that are key to this algorithm.
 
-## Find operation
+Say for example as below shows a list of points that are 'connected' togehter,
+
+`
+union(4,3)
+union(5,4)
+union(7,5)
+union(2,1)
+connected(7,3) # return true
+connected(7,1) # return false
+
+3---4        1---2     0
+    |
+    5
+     \
+    |  \
+     ---7     
+ `
+ 
+Here we can see that if we were to call the union command on 3 and 4 it will connect 3 and 4 together. Using connected we get to see if the components are connected together.
+ 
+ 
+Here we assume the connections have certain properties. 
+ 
+1.It is reflexive, meaning if 0 can be connected to itself.
+2.Symmetric, 5 can be connected to 7 and vice versa.
+3.Transitive, 3 is connected to 4 then and 4 is connected to 5, then 3 is connected to 5. 
+
+ When this relations are carried out we will have several connected components. Like the example above there is 3 connected components. 
+ 
+ 
+ 
+
+## Quick Find operation
+
+### Eager Algorithm
+
+1.The idea here is that if 2 items are in the same connected component they will have the same entry
+2.Those with the same index and entry value is considered the root
+
+
+When performing the union we will have to change one connected components entries i
+
+
+
+
+
 
 ## Union Operation
 
