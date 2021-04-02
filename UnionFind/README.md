@@ -65,5 +65,7 @@ Here as we saw earlier that this operation will be expensive. Hence we use the c
 
 ## Weighted Quick Union Find
 
+Here we could join 2 trees base on the size of each tree.  Taking a smaller tree above and larger tree below beigining union will cause the tree to get taller which results in higher complexity. Instead we do the vice versa of it to ensure the depth of the tree are in certain cases not that long.
+
 
 ## Path Compression
