@@ -32,7 +32,7 @@ Here we assume the connections have certain properties.
  When this relations are carried out we will have several connected components. Like the example above there is 3 connected components. 
  
  
- Npte that Qui
+ Note that Quick Finf and Quikc Union are data structures that are both focused on improving the operation.
 
 ## Quick Find Data Structure
 
@@ -67,5 +67,55 @@ Here as we saw earlier that this operation will be expensive. Hence we use the c
 
 Here we could join 2 trees base on the size of each tree.  Taking a smaller tree above and larger tree below beigining union will cause the tree to get taller which results in higher complexity. Instead we do the vice versa of it to ensure the depth of the tree are in certain cases not that long.
 
+In short, to not put the large tree lower, this is done by keeping track of each size of the connected component. The smaller tree like connected component, will have the its root index contain the value of the root larger tree. This makes the tree flat.
+
+```python
+# modifications to the previous code is that we add an array to keep track of the size of the connected components of each index.
+# connect which used the find method is still the same
+
+# in the union function as stated below
+
+j = self.find(p)
+i = self.find(q)
+
+if i == i : return
+if sz[i] < sz[j] : self.id[i]=j; self.sz[j]+=self.sz[i];
+else:  self.id[j]=i; self.sz[i]+=self.sz[j]
+    
+```
+Here both Union and Find takes O(log(N)) complexity when performing its operation due to it having similar properties to a tree and the tree does not grow to deep and rather shallow.
+
 
 ## Path Compression
+
+Set each index to have the root value index( id to be set to point to the root). This helps make the tree flat.
+
+There are 2 ways we can implement this. One is by using the child to point to the grandparent. The other is by setting each examined node to point to the root.
+
+```python
+# in the find function
+# p here is the value we intend to find in the given tree
+# points till we find the same index and value whihc indicates root
+
+root=p
+while root != id[root]:
+    id[i]=id[id[i]
+    root=id[i]
+
+## the 2nd implementation
+## another while loop from the above
+
+while id[p] ! == root:
+    # get the index
+    next = id[p]
+    id[p]=root
+    p = next
+
+```
+
+## Amoritzed Analysis
+
+Performs almost but not so much similar to a linear operation of O(n) rather than O(n^2) for the earlier data structure. 
+
+
+
