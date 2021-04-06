@@ -80,6 +80,9 @@ class BinarySearch(object):
         
         pos = lo + int((val-arr[lo])*(hi-lo) / (arr[hi]-arr[lo]))
 
+        if pos > hi: return arr+[val]
+        
+        if pos < lo: return [val]+arr
         
         if arr[pos]>val:
             bo=self.interpolation_insert_op(arr, lo, pos-1, val)
@@ -124,6 +127,6 @@ class BinarySearch(object):
         
 k=[ 2, 3, 4, 10, 40 ]
 bs=BinarySearch()
-print(bs.interpolation_insert(k,30))
+print(bs.interpolation_insert(k,39))
 
 
