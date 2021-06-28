@@ -54,3 +54,41 @@ A complete graph is a graph that has a unique edge for every single node. This g
 Take a look of an example below.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Graphs/Images/graph-4.PNG "Bipartite Graph Example (credit williamfiset")
+
+# Problems In Graphs
+
+1.Shortest Path 
+
+Sloved with either BFS, Djikstra,Bellman-Ford,Floud Warshall and other algorithms.
+
+2.Does a connectivity exist ?
+
+Here we could use a Union Find data structure. We could also use BFS or DFS to check if 2 points are connected( which will
+require more processing due to traversing the whole graph to check if the connection exist.
+
+3.Negative Cycle exits ? 
+
+Using algorithms like Bellman-Ford and Floyd-Warshall 
+
+4.Finding Briges ?
+
+An edge where if removed will result in 2 component graphs
+
+
+# Algorithms 
+
+## DFS
+
+## BFS
+
+## Djikstra
+
+## Prim
+
+## Kruskal
+
+## Floyd_Warshall
+
+## Tarjan and Kosaraju Algorithm
+
+
