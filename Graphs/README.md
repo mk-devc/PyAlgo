@@ -72,14 +72,105 @@ Using algorithms like Bellman-Ford and Floyd-Warshall
 
 4.Finding Briges ?
 
-An edge where if removed will result in 2 component graphs
+An edge where if removed will result in 2 component graphs. This is the same as the articulation problem.
+
+5. Minimum Spaning Tree
+
+A subset of edges that are connected in an edge weighted graph which connects all vertices together. This however is done with minimum total edge weight. Kruskal and Prims are a good way to slove this.
+
+Application such as networks and transportation use this.
+
+6. Network Flo
+
+How much can we flow through a network or test it's point before the network breaks.Example, how many car could pass through this network tranportation.
+
+Algorithms like Ford-Fulkerson,Edmonds-Karp and Dinic Algorithm could be used.
 
 
 # Algorithms 
 
 ## DFS
 
+An important Algorithm and also fundamental search algortihm for graphs. A fundamental algorthims that when modified becomes more useful and powerful.
+
+A Depth First Search (DFS) algorithm starts from a vertex v, then it traverses to its adjacent vertex (say x) that has not been visited before and mark as "visited" and goes on with the adjacent vertex of x and so on.
+
+If at any vertex, it encounters that all the adjacent vertices are visited, then it backtracks until it finds the first vertex having an adjacent vertex that has not been traversed before. Then, it traverses that vertex, continues with its adjacent vertices until it traverses all visited vertices and has to backtrack again. In this way, it will traverse all the vertices reachable from the initial vertex v. -- Tutorialspoint
+
+![Alt Text](https://pencilprogrammer.com/wp-content/plugins/phastpress/phast.php?service=images&src=https%3A%2F%2Fpencilprogrammer.com%2Fwp-content%2Fuploads%2F2018%2F10%2Fdfs.gif&cacheMarker=1599019524-266231&token=19a58266925e19f1)
+
+Watch a video explanation with animation [here.](https://www.youtube.com/watch?v=7fujbpJ0LB4&ab_channel=WilliamFiset)
+
+Here is a psuedocode.
+
+```
+n = number of node in the graph
+g = adjacency list of the graph
+
+visited=[False,False,..]
+# could also use a set as it is unqiue
+
+# Here DFS makes use of recursion as it is easier to understand and write compared to iterative
+
+function dfs(current):
+  visited[current) = True
+  
+  for neighbor in g[current]:
+      if g[neighbor] == False:
+          dfs(neighbor)
+
+start=0
+dfs(start)
+
+```
+Finding Connected Components in a graph by performing a DFS and we tag each node with a component it belongs to. This also could be done using a Union Find data structure.
+
+```
+
+```
+
 ## BFS
+
+Also another important algorithm. Most commonly used for finding the shortest path for unweighted graphs.
+
+The Breadth First Search (BFS) traversal is an algorithm, which is used to visit all of the nodes of a given graph. In this traversal algorithm one node is selected and then all of the adjacent nodes are visited one by one. After completing all of the adjacent vertices, it moves further to check another vertex and checks its adjacent vertices again.
+
+An important data structure that is needed to carry this out is using a queue. Where, the neighbouring nodes on each layer is added into the queue and pop of when done. The condition where we have no more nodes will signify that we have visited all the graph.
+
+![Alt Text](https://pencilprogrammer.com/wp-content/uploads/2018/09/ezgif.com-optimize.gif)
+
+For video animation and explanation check [this out](https://www.youtube.com/watch?v=oDqjPvD54Ss).
+
+Here is a pseudocode on it.
+
+```
+n = number of node in the graph
+g = adjacency list of the graph
+
+visited=[False,False,..]
+# could also use a set as it is unqiue
+
+function bfs(current):
+    queue=data structure to perform enqeue and deque
+    e.enqueue(
+      
+
+
+
+```
+
+## Complexity
+
+Algorithms         | Complexity(Time)
+-------------------|-----------------
+Depth-First Search |  O(V+E)
+Breath-First-Search|  O(V+E)
+
+Here the DFS visits every vertex and check every edge to see if it has been visited the time complexity will be O(V+E) where V is the number of vertices and E is the number of edges.
+
+## Modified Algorithms
+
+## Topological Sort
 
 ## Djikstra
 
