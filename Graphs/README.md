@@ -150,14 +150,49 @@ g = adjacency list of the graph
 visited=[False,False,..]
 # could also use a set as it is unqiue
 
+prev=[None,None...]
+# here we let it be for tracking previous parent node although not needed for performing bfs
+
 function bfs(current):
-    queue=data structure to perform enqeue and deque
-    e.enqueue(
-      
+    q=queue data structure to perform enqeue and deque
+    q.enqueue(cuurent)
+    
+    while != []: # not empty
+        node=q.pop()
+        
+        for x in g[node]:
+            if not in visited[x]:
+                q.enqueue(x)
+                visited[x]=True
+                # here is to track the previous parent node
+                prev[x]=node
+                
+    return prev
+
+```
+
+Here prev is not neccessary for performing bfs. However let expand the idea. Suppose we would like to track the path. This uses the data structure union find to achieve it.
 
 
 
 ```
+function reconstructPath(s,e,prev):
+  # s for start
+  # e for end
+  # prev is the tracked arrau union find data structure
+  
+  path=[] # array
+  at=e
+  while at != None:        
+    path.insert(0,at)
+    at = prev[at]
+   
+   # check if they belong to the same connected component or are equal
+   if path[0] == s:
+      return path
+   return []
+ ```    
+   
 
 ## Complexity
 
@@ -168,9 +203,69 @@ Breath-First-Search|  O(V+E)
 
 Here the DFS visits every vertex and check every edge to see if it has been visited the time complexity will be O(V+E) where V is the number of vertices and E is the number of edges.
 
+## Working on Grids using DFS and BFS
+
 ## Modified Algorithms
 
 ## Topological Sort
+
+A topsort is such that some event or object is required first before proceeding to the next event or object. An example would be taking prerequisites for certain classes. If you did took subject A and passed , you are eligble to take subject B. If you could take B then you could take C.
+
+This gives an ordering to the nodes in the graph. It is important to note that topological sorting is not unqiue. An example would be that you require to take A and then D before you can take subject C as an alternative path.
+
+```
+
+A----->B----->C
+v+             ^
+ \           /
+  \         /
+   \       /
+    \     /
+     \   / 
+       D
+```
+
+However graphs that have a cycle could not possibly have a toposort. This is due to because in a cycle there is no where to start and end as you will keep looping in the cycle. Only DAG( Directed Acyclic Graph ) are graphs that have no cycles in it.
+
+There are 2 methods to see if a graph has cycles ones is we use normal dfs to detect if the graph has a cycle and the other is using Tarjan Strongly connected components inorder to find this cycles. Tarjan connected component will be explained later on. For now let's get an understanding on using the DFS method.
+
+The way how it works using dfs is by checking for back edges. Here we get at the ***current*** path or recursion were currently taking. So based on the image below we could see if we start from vertex 0 and move to vertex 1 and then 2, we add them to a stack. However we hit vertex 0 again, we take the node and compare it to what we have in the stack. This indicates that we do have a cycle. Once performing backtracking it is neccesary to pop of the stack for a new path.
+
+
+![Alt Text](https://media.geeksforgeeks.org/wp-content/uploads/cycle.png)
+
+```
+n = number of node in the graph
+g = adjacency list of the graph
+
+recurStack=[]
+visited=[False,False,..]
+# could also use a set as it is unqiue
+
+prev=[None,None...]
+# here we let it be for tracking previous parent node although not needed for performing bfs
+
+function isCycle(v,visited,recurStack):
+      
+      visited[v]=True
+      # stack operations are push and pop
+      recStack.push(v)
+      
+      for x in g[v]:
+          if visited[x] == False:
+              
+
+
+
+
+```
+
+
+Algorithms         | Complexity(Time)
+-------------------|-----------------
+Topological Sort   |  O(V+E)
+
+
 
 ## Djikstra
 
