@@ -123,6 +123,29 @@ start=0
 dfs(start)
 
 ```
+
+We could also perform DFS iteratively as below. Only by replacing the recursive stack with our own stack. The way this works by storing in the stack as in the recursive version we would go to the next level by accessing the node in the end of the stack when we pop it out. Once where done with that level. We would go on to the next item in stack on the same level( backtracking to access another path on the same level). Once were done with that level we back track again and the process continues.
+
+```
+n = number of node in the graph
+g = adjacency list of the graph
+
+visited=[False,False,..]
+stack=[] # for dfs
+
+while stack.length:
+    s=stack[-1]
+    stack.pop()
+    
+    if visited[s] == False:
+        visited[s]=True
+        
+    for neighbor in g[s]:
+        if visited[neighbor]==False:
+            stack.add(neighbor)
+
+
+```
 Finding Connected Components in a graph by performing a DFS and we tag each node with a component it belongs to. This also could be done using a Union Find data structure.
 
 ```
@@ -233,12 +256,11 @@ The way how it works using dfs is by checking for back edges. Here we get at the
 
 
 ![Alt Text](https://media.geeksforgeeks.org/wp-content/uploads/cycle.png)
-
 ```
 n = number of node in the graph
 g = adjacency list of the graph
 
-recurStack=[]
+recurStack=[False,False,...]
 visited=[False,False,..]
 # could also use a set as it is unqiue
 
@@ -249,25 +271,77 @@ function isCycle(v,visited,recurStack):
       
       visited[v]=True
       # stack operations are push and pop
-      recStack.push(v)
+      recurStack[v]=True
       
-      for x in g[v]:
-          if visited[x] == False:
-              
+      for neighbor in g[v]:
+          if visited[neighbor] == False:
+              if isCycle(neighbor,visited,recursStack) ==True:
+                  return True
+          elif recurStack[neighbor] == True:
+                  return True
+                  
+                  
+      recurStack[v]=False
+      return False
+```
 
+
+
+Now once we have confirmed its a DAG graph. We perform toposort which is basically adding the order of nodes as you recursively on the return backwards. 
+
+
+
+![Alt Text](https://thumbs.gfycat.com/GraveHastyAmericancrow-size_restricted.gif)
 
 
 
 ```
+function toposort(v,visited,stack,g):
+     visited[v]=True
+     
+     for neighbor in g[v]:
+          if visited[neighbor] == False:
+              toposort(neighbor,visited,stack,g)
+              
+     stack.add(v)
 
+
+function topologicalsort():
+    n = number of node in the graph
+    g = adjacency list of the graph
+
+    visited=[False,False,..]
+    # could also use a set as it is unqiue
+    stack=[]
+    
+    
+    for i in range(n):
+        if visited[i] == False:
+            toposort(i,visited,stack,g)
+    
+    # reverse order to go from start to finish and not end to finish
+    return stack[::-1]
+
+```
 
 Algorithms         | Complexity(Time)
 -------------------|-----------------
 Topological Sort   |  O(V+E)
 
 
+## Shortest Path In DAG
+
+![alt text](https://1.bp.blogspot.com/-371CuL7mRK8/T7JygBjCCoI/AAAAAAAAAK4/ZLXWpqkViYA/s1600/dijksta_anim.gif)
+
 
 ## Djikstra
+
+Djikstra is a single source short path algorithm for graphs. However, it cant handle negative value.
+
+
+Algorithms           | Complexity(Time)
+---------------------|-----------------
+Djikstra Algortihm   |  O(V+log(E))
 
 ## Prim
 
