@@ -102,7 +102,7 @@ Counting sort is an algorithm for sorting a collection of objects according to k
 
 ```
 
-
+```
 
 Points to be noted: 
 1. Counting sort is efficient if the range of input data is not significantly greater than the number of objects to be sorted. Consider the situation where the input sequence is between range 1 to 10K and the data is 10, 5, 10K, 5K. 
