@@ -97,7 +97,7 @@ A Depth First Search (DFS) algorithm starts from a vertex v, then it traverses t
 
 If at any vertex, it encounters that all the adjacent vertices are visited, then it backtracks until it finds the first vertex having an adjacent vertex that has not been traversed before. Then, it traverses that vertex, continues with its adjacent vertices until it traverses all visited vertices and has to backtrack again. In this way, it will traverse all the vertices reachable from the initial vertex v. -- Tutorialspoint
 
-![Alt Text](https://pencilprogrammer.com/wp-content/plugins/phastpress/phast.php?service=images&src=https%3A%2F%2Fpencilprogrammer.com%2Fwp-content%2Fuploads%2F2018%2F10%2Fdfs.gif&cacheMarker=1599019524-266231&token=19a58266925e19f1)
+![Alt Text](https://www.codesdope.com/staticroot/images/algorithm/dfs.gif)
 
 Watch a video explanation with animation [here.](https://www.youtube.com/watch?v=7fujbpJ0LB4&ab_channel=WilliamFiset)
 
@@ -239,7 +239,7 @@ This gives an ordering to the nodes in the graph. It is important to note that t
 ```
 
 A----->B----->C
-v+             ^
+v             ^
  \           /
   \         /
    \       /
@@ -306,7 +306,7 @@ function toposort(v,visited,stack,g):
      stack.add(v)
 
 
-function topologicalsort():
+function topologicalsort(n,g):
     n = number of node in the graph
     g = adjacency list of the graph
 
@@ -329,9 +329,57 @@ Algorithms         | Complexity(Time)
 Topological Sort   |  O(V+E)
 
 
-## Shortest Path In DAG
+## Single Source Shortest Path In DAG
 
-![alt text](https://1.bp.blogspot.com/-371CuL7mRK8/T7JygBjCCoI/AAAAAAAAAK4/ZLXWpqkViYA/s1600/dijksta_anim.gif)
+Sloved pretty quick by using topological sorting to achieve an order and it will be then processed sequentially. Then later follows by relaxing each edge (updating to a better value or minimum value of the edge on that particular node).
+
+
+![alt text](https://www.cpp.edu/~ftang/courses/CS241/notes/images/graph/bellman2.gif)
+
+The above shows that we have a topo order of s-> A -> C -> B -> D -> t. We begin from node s to node t, finding its minimum weight along that path. Here we have an array dist for each node. This dist array stores the minimum cumulative sum of weight from starting node to the current node. In this array,we relabel our nodes from s to t as 0 to n-1.
+
+By following the topo order we start at node s, we see that the 2 adjacent node are A and C. Hence in our distance array for minimum cumulative sum of weight from starting node to the current node, so we make array index 1 as 5 and array index 2 as -2. We then move on to node A based on the toposort, we find that only node B is its neighbour in the outward direction, Hence we update dist array index 3 to 1. We now move to node C and we then discover our neighbors are node A and node B. Here we find that the current cumulative sum of weight from the starting node to the current node A that was recorded previously with a value 5 from node s to A is alot more compared to node s to C and finally to A. Hence we substitute it with the new value 0 at index 1 in the dist array. Same goes for B as previously it was 6 from s-> A -> B, but at node C we find that a distance of -2+4=2 is lower compared to 6. So we substitute the value in the dist array at index 2.
+
+Below is the pseduocode on how this works. We used topological sorting that was done earlier to obtain its ordering and perform SSSP relaxing method to get minimum distance from s to t.
+
+```
+# class edge is used to help store weights of the next node being pointed from the current node.
+class Edge:
+      constructor(from,to,weight):
+          self.from=from
+          self.to = to
+          self.weight=weight
+         
+```  
+Algorithm for single shortest path.
+
+```
+# return an array of order of nodes
+# number of nodes in graph , g is adjacencylist
+topsortOrder = topologicalsort(n,g)
+
+dist = [None]*n
+
+for i in range(n):
+    
+    nodeIdx=topsortOrder[i]
+    
+    if dist[nodeIdx] == None:
+        adjEdges=g[nodeIdx]
+        
+        if adjEdges != None:
+           for edge in adjEdges:
+                newDist=dist[nodeIdx]+edge.weight
+                if dist[edge.to] == None: dist[edge.to]=newDist
+                else: dist[edge.to] = minimum( newDist, dist[edge.to])
+        
+return dist
+
+```
+Algorithm            | Complexity(Time) | Complexity(Space)
+---------------------|------------------|------------------
+SSSP Algortihm       |      O(V+E)      |    O(V)
+
 
 
 ## Djikstra
