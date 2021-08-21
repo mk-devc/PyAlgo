@@ -39,4 +39,17 @@ Here we see that it is a heap-ordered binary tree
  
  ![Alt Text](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmiro.medium.com%2Fmax%2F478%2F1*Tyb1cOw3b6jp1cRmuslJAg.png&f=1&nofb=1)
  
- ![Alt Text](https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Max-Heap.svg/330px-Max-Heap.svg.png)
+ The above is a representation of the tree, however the data structure that is used to represent this tree is an array. Accessing the child and the parents are done by using a mathematical formula.
+ 
+ ![Alt Text](https://miro.medium.com/max/600/1*MtegLKi_gNCdhVhX3GcGaA.png)
+ 
+ For the array representation we begin at indices 1 althought we can start from indices 0.
+ 
+ Binary Heap Properties are as follows:
+ 
+ 1. The largest key is either array[1] ( at index 1 or 0 ), root of binary tree.
+ 2. Use indices to move through the tree. Parent node at k(current index) is k//2( for python ) and children node is 2k and 2k+1
+
+Promoting in a heap is requires if the heap order is violated and needed, the is when for example in a max heap a childs keys becomes larger compared to the parents key. To return back to the heap condition, we perform a swap operation up the tree using the formula given to achieve the heap order. 
+
+An example is shown below.
