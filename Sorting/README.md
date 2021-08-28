@@ -83,11 +83,15 @@ To store the values
 
 We perform sorting in each bucket. We later flattten them out into a 1d array with elements being sorted.
 
+# Heap Sort
+
+
 # Radix Sort
 
 Radix sort is a non-comparative sorting algorithm. It avoids comparison by creating and distributing elements into buckets according to their radix( base 10 for numbers from 0 to 9). For elements with more than one significant digit, this bucketing process is repeated for each digit, while preserving the ordering of the prior step, until all digits have been considered. 
 
 Here the algorithm goes through each position in the digit. For example, the number 92  which has 10's that is 2  or the 100's which is 9. Each position in this digit is assessed by each time across the whole array of numbers. The number of times it is assessed across it's position is determined by the largest number of digits in the array.
+
 We store them in arrays ranging from 0 to 9 according to the base. Once done for one pass, we flatten them and the process repeats for the next leading digits
 
 
