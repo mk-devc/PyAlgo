@@ -165,7 +165,7 @@ function heapify():
         k=n//2
         # iterate through each parent.
         while k >=1:
-            sink(heap,k,n(=)
+            sink(heap,k,n)
 ```
 
 It is recommend to use immutable objects to ease operations for debugging and such for keys. For converting the above to min heap all we have to do is use the more than equal (>=) to replace all its less than equal (<=) syntax.
@@ -185,3 +185,8 @@ public final class Vector {
  …
 }
 ```
+
+# Indexed Priority Queue
+
+# Binomial Heap
+
