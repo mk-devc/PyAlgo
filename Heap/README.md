@@ -404,3 +404,19 @@ function decreaseKey(ki,value):
 
 # Binomial Heap
 
+A binomial heap is implemented as a set of binomial trees (compare with a binary heap, which has a shape of a single binary tree), which are defined recursively as follows:
+
+1.A binomial tree of order 0 is a single node
+2.A binomial tree of order k has a root node whose children are roots of binomial trees of orders k-1, k-2, ..., 2, 1, 0 (in this order). -- Wikipedia
+
+![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Binomial_Trees.svg/1024px-Binomial_Trees.svg.png)
+
+
+## Binomial Heap Structure
+
+1.Each binomial tree in a heap obeys the minimum-heap property: the key of a node is greater than or equal to the key of its parent. ( Could be a max heap if needed, but by convention will move forward with
+min heap )
+
+2.There can be at most one binomial tree for each order, including zero order.
+
+For point 1, as we discussed it uses the root of each binomial tree contains the smallst key.
