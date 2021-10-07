@@ -98,9 +98,9 @@ Peusodcode for the sink operation is a below.
 heap=[7,6,5,....]
 
 # k is the position of current node
-function sink(k,n):
+function sink(k,N):
         # here we use for index 1 will be the root
-        while 2*k <= n:
+        while 2*k <= N:
             j=2*k
             if j < N and heap[j]<heap[j+1]: j+=1
             if not heap[k] < heap[j]: break
@@ -128,7 +128,7 @@ function insert(key):
         swim(n)
 ```
 
-For removing the element we could use to delete the maximum for the max heap. Takes 2Log(N) compares. As the diagram above illustrates we remove T from the maximum and we swap the last node in the array to the top of the tree or index 1 or 0 of the heap array. Once we have swapped it we perform the sink operation to achieve heap order.
+For removing the element we could use to delete the maximum for the max heap. Takes 2Log(N) compares. As the diagram above illustrates we remove T from the maximum and we swap the last node in the array to the top of the tree or index 1 or 0 of the heap array. Once we have swapped it we perform the sink operation to achieve heap order. An example could be seen above in the heap operations image.
 
 Pseudocode for delMax operation is as below.
 
@@ -152,10 +152,9 @@ funtion delMax():
 
 # Performing Heapify
 
-When we have an array that is ordered at random heapifying it will be a good idea inorder to achieve the heap order. This is done by accessing each parent to perform a sink operation if heap order is not satifsified in that sub heap tree.
+When we have an array that is ordered at random heapifying it will be a good idea inorder to achieve the heap order. This is done by accessing each parent to perform a sink operation if heap order is not satifsified in that sub heap tree. 
 
-
-First we use the last index and we half it as the formula states to access its parent. From there we perform the sink operation so at 11//2 will give us 5. From there we check if the sink operation is needed. In this case, it does. So at position 5 we move to the next parent by decreasing k which is 5 by 1 which is another parent at 4. We then repeat and perform sink operation till we reach the root and all sub heaps are in the heap order causing the whole heap array to be in heap order.
+Take a look at the example below, first we use the last index and we half it as the formula states to access its parent. From there we perform the sink operation so at 11//2 will give us 5. From there we check if the sink operation is needed. In this case, it does. So at position 5 we move to the next parent by decreasing k which is 5 by 1 which is another parent at 4. We then repeat and perform sink operation till we reach the root and all sub heaps are in the heap order causing the whole heap array to be in heap order.
 
 ![alt text](https://algs4.cs.princeton.edu/24pq/images/heapsort-trace.png)
 
@@ -239,7 +238,7 @@ For the im(inverse map) array, it is used to check the key index( ki ) in the ke
 
 ## Insertion in Indexed PQ
 
-Insertion are like regular heap pq, where we add the the end of the array or in the tree structure visualization from the bottom left and we later perform the sink function. The only difference here is that we need to keep the track of the pm and im array.
+Insertion are like regular heap pq, where we add the the end of the array or in the tree structure visualization from the bottom left and we later perform the sink function. The only difference here is that we need to do extra by keep the track of the pm and im array.
 
 
 
@@ -247,7 +246,7 @@ Insertion are like regular heap pq, where we add the the end of the array or in 
 
 Below we can see that pm changes as we are swaping the nodes with its position in the heap array. Hence at ki( key index of the key index table ) is now located at its new position in the heap array. So, at ki 12 and 11 we swap its values.
 
-Same goes for im, however, keep in mind that the index of im represents the position in the heap array. So at position 5 and 12 we swap it ki value when performing the swim operation.We perform this till the heap order is satisifed.
+Same goes for im, however, keep in mind that the index of im represents the position in the heap array. So at position 5 and 12 we swap it, the ki value when performing the swim operation.We perform this till the heap order is satisifed.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_insert_1.PNG)
 
@@ -315,20 +314,28 @@ function sink(i):
 
 Polling which is the removal of the root value performs similar in binary heap. However to remove an element rather than scanning the whole heap array. We used the key index table to find its position in the heap array. We then perform the usual of swapping the node with the end node, nulling the end node. The newly swapped node from the end will either need be sinked down  or swimed up the heap array.
 
-Here is an example for polling.
+Here is an example for polling. The image below shows that the array value at position 0 and 12 have already been swapped with each other.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_polling.PNG)
 
+We then perform the swap in the im and pm array as shown. Note that the vals array does not change as the value is already been indexed to the ki table.
+
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_polling_1.PNG)
+
+We later remove the value by replacing the value based on the last position in the array( in this case it's 12 ). We obtain the key index in the heap array and from the im array and we replace it with -1 and using the value we got before we replace the im array with -1 and sub the vals array with a null.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_polling_2.PNG)
 
+We have then successfully remove the last key value. The rest that is left is to, rectify the heap violation by performing a sink operation on the root.
+
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_polling_3.PNG)
+
+Now, the heap order is statisfied.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_polling_4.PNG)
 
 
-Here is an example for Removing.
+Here is an example for Removing. As we can see that we would like to remove the value Laura from the Key Index table.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_removal.PNG)
 
