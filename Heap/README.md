@@ -335,13 +335,20 @@ Now, the heap order is statisfied.
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_polling_4.PNG)
 
 
-Here is an example for Removing. As we can see that we would like to remove the value Laura from the Key Index table.
+Here is an example for Removing. As we can see that we would like to remove the value Laura from the Key Index table. We look up the pm array which its index is the key index table and the value in the array are the index in the heap array( poistion in the heap array). Laura here has a position index at the red node.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_removal.PNG)
 
+We swap it with the last value in the heap array (in the tree like struture repsented in an array form), with this we will need to keep track of the pm array and the im array.
+As you can see in the image below we swap the position in the heap array at index 1 based on the ki index 2 in the pm array with position in the heap array 11 with ki of 11 in the pm array. Same could be said for the im array only that the index of im array is the position in the heap array which is 1 with a value of 2 which represents the ki value in the key index (ki) table. This is swap with im array with index 11 which is the position in the heap array with a value of 11 and that is the key index table.
+
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_removal_1.PNG)
 
+Once the swapping is done we null the last value of the last element which is the value we would like to eliminate. Replace the vals array with null and the other pm and im array with -1 ( since we cant have an index with -1)
+
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_removal_2.PNG)
+
+After we have remove the element the heap order is not satisfied. Hence we will need to perform a sink operation as this is a mean heap. The value 11 is much larger compared to 5 ( at the purple ball ) and we will need to perform a sink operation to statisfy the heap order. This is done till the both children is smaller compared to the parent.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_removal_3.PNG)
 
@@ -365,9 +372,11 @@ function remove(ki):
 
 ## Updating 
 
-Updates value of a key in the binary heap by making use of the key index table. It is efficient as it works as a look up rather than scanning through the whole array.
+Updates value of a key in the binary heap by making use of the key index table. It is efficient as it works as a look up rather than scanning through the whole array. The figure below we see that we would like to change the key Carly to a value 1. As we can see, the heap order is not statisfied ( min heap ) as the parent with a value of 5 is larger compared to value of 1. Here we perform the siwim function, while keeping track of the im and pm array till the heap order is satisfied.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_updating_1.PNG)
+
+The heap order is statisfied and the im and pm array are being kept track off.
 
 ![alt text](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/ipq_updating_2.PNG)
 
