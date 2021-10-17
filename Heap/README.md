@@ -436,3 +436,176 @@ min heap )
 2.There can be at most one binomial tree for each order, including zero order.
 
 For point 1, as we discussed it uses the root of each binomial tree contains the smallst key.
+
+
+
+
+
+# Fibonacci Heap
+
+Fibonnaci Heaps differ from Binomial Heaps as follows:
+
+1. Fibonnaci heaps are not neccesarily binomial, they can have more than 2 children.
+2. Siblings ( or next base on the code above) are linked both ways like a doubly linked list.
+3. There is a pointer min which will always point to the minimum key value.
+4. The root degress are not unique ( unlike binomial which requires to be unique)
+5. There is a special attribute that mantains total number of nodes in the fibonacci heap.
+6. Nodes can be marked.
+
+We will visit in more detail regarding this points. We first take a look at an example below. 
+
+![alt text](https://cdn.programiz.com/cdn/farfuture/WgeXgB_o4_0qX5Iv2msbC1zcYn1s3Ay7ypgfac4CmMo/mtime:1585306008/sites/tutorial2program/files/fibonacci-heap.png)
+
+If we look at the strucutre and point 1. It actually uses a circularly doubly link list as below.
+
+Advantage compared to using Binomial Heaps are as follows.
+
+1. A node can be removed from a circularly double link list pretty fast at a complexity of O(1).
+2. Given such 2 list can be concatenated at O(1) time.
+3. 
+
+![alt text](https://cdn.programiz.com/sites/tutorial2program/files/fibonacci-heap-structure.png)
+
+With this in mind let take a look at how the nodes are composed like with the pseudocode below.
+
+```
+class Node:
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
+            # left and right are used for doubly link list, child is a single link list as shown in the image above
+            self.parent = self.child = self.left = self.right = None
+            # number of connections or children
+            self.degree = 0
+            self.mark = False
+
+```
+
+
+## Operations in Fibonacci Heap
+
+
+
+### Creation  and Insertion
+
+To insert with first have to create a singleton tree, which is the creation step, to insert this singleton tree we add to left of min pointer. The pseduocode below explains it.
+
+```
+# Basic representation of the overall FH (Fibonacci Heap)
+class FibonnacciHeap(object):
+       def __init__():
+        self.root_list,self.min_node=None,None
+        self.total_nodes=0
+```
+
+```
+# merge to the left of the min value in the root list
+
+function insert(key,value):
+    # creation of singleton node
+    n=self.Node(key,value)
+    n.left=n.right=n
+    # if Node is present 
+    if self.min_node!=None:
+        # link left of node to left of min
+        n.left=self.min_node.left
+        n.right=self.min_node
+        
+        if n.left != None and n.right != None:
+            # both have values left and right
+            n.left.right=n 
+            n.right.left=n
+        else: 
+            # when left has None, since weve check min != None right will have a value always
+            n.right.left=n
+    else:
+        self.min_node=n
+    
+    if n.key < min_node.key:
+        self.min_node=n
+    self.total_nodes+=1
+    
+    return n
+```     
+
+### Union of Fibonacci Heap
+
+Here we concatenate 2 fibonacci heap where root list are circularly doubly link list. Take a look at the pseudocode below.
+
+
+```
+# concatenate the fb heaps with its root list like usual
+# since its a fibonacci heap keep in mind that we have doubly link list
+
+function merge_fh(h1,h2):
+    h2.root_head.left.right=h1.root_head
+    h1.root_head.left=h2.root_head.left
+    h1.root_head.left.right=h2.root_head
+    h2.root_head.left=h1.root_head.left
+    
+    
+    if h1.min_node > h2.min_node:
+        h1.min_node=h2.min_node
+        
+    h1.total_nodes=h1.total_node+h2.total_nodes
+    
+    return h1
+```
+
+### Delete Minimum In Fibonacci Heap
+
+Here there are 2 things we will do, 
+
+1. Delete the min and concatenate its children into root list.
+2. Consolidate trees so that no two roots have the same degree.
+
+```
+function iterate(self,head):
+    # if we return back to the head due to it being doubly linked list we break out of it
+    # mean while we collect its children and return it in the form a generator like (mutiple returns) using the yield keyword
+    node = stop= head 
+    flag=False
+    
+    while node != stop and flag == False:
+        if node == stop:
+            flag=True
+        yield node
+        
+        node=node.right
+        
+```
+
+```
+function merge_root_list(h,node):
+       
+        
+
+``` 
+
+function extract_min():
+        z= self.min_node
+        
+        if z != None:
+            if z.child != None:
+                # here we attach child to the root list
+                children=[ x for x in self.iterate(z.child)]
+                
+                # place left and right marker
+                left_ptr=h.min_node.left
+                right_ptr=h.min_node.right
+                
+                # remove the min but keep the min_node pointer pointing to it
+                left_ptr.right=right_ptr
+                right_ptr.left=left_ptr
+                
+                for x in range(len(children)):
+                
+                    children[x].right=right_ptr
+                    right_ptr.left=children[x]
+                    children[x].left=left_ptr
+                    left_ptr.right=children[x]
+                    
+                    right_ptr=children[x]
+                    
+
+
