@@ -573,17 +573,12 @@ function iterate(self,head):
         
         node=node.right
         
-```
-
-```
-function merge_root_list(h,node):
-       
-        
+```    
 
 ``` 
 
-function extract_min():
-        z= self.min_node
+function extract_min(h):
+        z= h.min_node
         
         if z != None:
             if z.child != None:
@@ -605,7 +600,183 @@ function extract_min():
                     children[x].left=left_ptr
                     left_ptr.right=children[x]
                     
-                    right_ptr=children[x]
+                    left_ptr=children[x]
+                    
+                    # null the parents out
+                    children[x].parent=None
+                    
+                self.min_node=h.root_head
+                
+                if z==z.right:
+                    h.min_node=h.root_head = None
+                else:
+                    min_node=z.right
+                    self.consolidate()
+                
+                
+
+function consolidate():
+        
+        A = [None] * int(math.log(self.total_nodes) * 2 )
+        nodes = [w for w in self.iterate(self.root_head)]
+        
+        for x in range(0,len(nodes)):
+            w=nodes[x]            
+            d=w.degree
+            
+            while A[d] != None:
+                y=A[d]
+                
+                if x.key > y.key:
+                    # swap with x and y to ensure x is always the parent and y is the child
+                    # to write lesser code and more systematic
+                    temp=x
+                    x=y
+                    y=temp
+                    
+                self.heap_link(y,x)
+                A[d]=None
+                d+=1
+            A[d]=x
+            
+            # finding new min node
+            # we iterate through A
+            for x in range(0,len(A)):
+                if A[x] != None:
+                    # check their key is smaller than the min_node key
+                    if A[x].key < self.min_node.key:
+                        self.min_node =A[x]
+                    
                     
 
+ ```
+ ## Decrease Key and Delete Key in Fibonacci Heap
+ 
+ 
+ The 
+ ```
+ function decrease_key(x,k):
+        # k is the value to be updated in the node, must be lower since it's min heap order
+        if k > x.key:
+            return None
+        
+        x.key=k
+        
+        y=x.parent
+        
+        if y != None and x.key > y.key:
+            self.cut(x,y)
+            self.cascading_cut(y)
+            
+            
+        
+        
+ 
+ 
+ function cut(x,y):
+        # y is the parent , xi is the child
+        self.remove_from_child_list(y,x)
+        y.degree-=1
+        self.merge_with_root_list(x)
+        x.parent=None
+        x.mark=False
+        
+        
+ function cascading_cut(self,y):
+        z=y.parent
+        if z != None:
+            if y.mark==False:
+                y.mark=True
+            else:
+                self.cut(y,z)
+                self.cascading_cut(z)
+        
+ 
+ ```
+ ```
+ # Helper function
+                    
+function heap_link(y,x):
+        # this links the to the root list by removing y which is parent and attaching children to the root list
+        self.remove_from_root_list(y)  
+        # doubly link list to itself
+        y.left = y.right = y
+        # 
+        self.merge_with_child_list(x,y)
+        x.degree+=1
+        y.parent=x
+        y.mark=False
+                    
+                    
+                
+                    
+function remove_from_root_list(self,y):
+        # remove y from root list
+        if y == self.root_head:
+            self.root_head=y.right
+        
+        # basically skipping the connection , 0---1---2 becomes 0---2 , 1
+        node.left.right=node.right
+        node.right.left=left
+        
+function merge_with_child_list(self,parent,node):
+        if parent.child == None:
+            # child is the variable node for the parent 
+            parent.child=node        
+        else:
+            #like inserting between the child root list
+            # here we do it for the node 
+            #   parent
+            #      |
+            #   child <-> ( node needed to be inserted ) <-> (previous children root list node )
+            # we start with pointing in the node
+            node.right=parent.child.right
+            node.left=parent.child
+            # then we do it for the parent
+            parent.child.right.left = node
+            parent.child.right = node
+                
+
+function merge_with_root_list(self,node):
+        # if none it will be the root head
+        if self.root_head == None:
+            self.root_head=node
+        else:
+        # 1<--->3 , insert 2 , 1<--->2<--->3
+           node.right=self.root_head.right
+           node.left=self.root_head
+           self.root_head.right.left=node
+           self.root_head.right=node
+
+                    
+                    
+function remove_from_child_list(parent,node):
+        if parent.child  == parent.child.right:
+                # release the only child
+                parent.child=None
+        elif parent.child ==node:
+                # the node we would like to remove, let the next child be the direct child to the parent
+                #   1                      1
+                #   |          -->         |
+                #   2<--->3           2<-->3
+                parent.child=node.right
+                node.right.parent=parent
+        
+        
+        # skipping the middle node which is removing it
+        # 1<---->2<---->3  --> 1<---->3
+        # if we take a look at the figure above we can see that it will be carried out the same
+        #         1
+        #         |
+        # None<-->3
+        node.left.right=node.right
+        node.right.left=node.left
+                
+        
+                
+                
+                
+                    
+                    
+```
 
