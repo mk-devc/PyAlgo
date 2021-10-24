@@ -438,7 +438,7 @@ min heap )
 For point 1, as we discussed it uses the root of each binomial tree contains the smallst key.
 
 
-
+COmplexity of Binomial H
 
 
 # Fibonacci Heap
@@ -485,214 +485,9 @@ class Node:
 ## Operations in Fibonacci Heap
 
 
-
-### Creation  and Insertion
-
-To insert with first have to create a singleton tree, which is the creation step, to insert this singleton tree we add to left of min pointer. The pseduocode below explains it.
-
-```
-# Basic representation of the overall FH (Fibonacci Heap)
-class FibonnacciHeap(object):
-       def __init__():
-        self.root_list,self.min_node=None,None
-        self.total_nodes=0
-```
-
-```
-# merge to the left of the min value in the root list
-
-function insert(key,value):
-    # creation of singleton node
-    n=self.Node(key,value)
-    n.left=n.right=n
-    # if Node is present 
-    if self.min_node!=None:
-        # link left of node to left of min
-        n.left=self.min_node.left
-        n.right=self.min_node
-        
-        if n.left != None and n.right != None:
-            # both have values left and right
-            n.left.right=n 
-            n.right.left=n
-        else: 
-            # when left has None, since weve check min != None right will have a value always
-            n.right.left=n
-    else:
-        self.min_node=n
-    
-    if n.key < min_node.key:
-        self.min_node=n
-    self.total_nodes+=1
-    
-    return n
-```     
-
-### Union of Fibonacci Heap
-
-Here we concatenate 2 fibonacci heap where root list are circularly doubly link list. Take a look at the pseudocode below.
+## Needed Helper Functions in Fibonnaci Heap Operations
 
 
-```
-# concatenate the fb heaps with its root list like usual
-# since its a fibonacci heap keep in mind that we have doubly link list
-
-function merge_fh(h1,h2):
-    h2.root_head.left.right=h1.root_head
-    h1.root_head.left=h2.root_head.left
-    h1.root_head.left.right=h2.root_head
-    h2.root_head.left=h1.root_head.left
-    
-    
-    if h1.min_node > h2.min_node:
-        h1.min_node=h2.min_node
-        
-    h1.total_nodes=h1.total_node+h2.total_nodes
-    
-    return h1
-```
-
-### Delete Minimum In Fibonacci Heap
-
-Here there are 2 things we will do, 
-
-1. Delete the min and concatenate its children into root list.
-2. Consolidate trees so that no two roots have the same degree.
-
-```
-function iterate(self,head):
-    # if we return back to the head due to it being doubly linked list we break out of it
-    # mean while we collect its children and return it in the form a generator like (mutiple returns) using the yield keyword
-    node = stop= head 
-    flag=False
-    
-    while node != stop and flag == False:
-        if node == stop:
-            flag=True
-        yield node
-        
-        node=node.right
-        
-```    
-
-``` 
-
-function extract_min(h):
-        z= h.min_node
-        
-        if z != None:
-            if z.child != None:
-                # here we attach child to the root list
-                children=[ x for x in self.iterate(z.child)]
-                
-                # place left and right marker
-                left_ptr=h.min_node.left
-                right_ptr=h.min_node.right
-                
-                # remove the min but keep the min_node pointer pointing to it
-                left_ptr.right=right_ptr
-                right_ptr.left=left_ptr
-                
-                for x in range(len(children)):
-                
-                    children[x].right=right_ptr
-                    right_ptr.left=children[x]
-                    children[x].left=left_ptr
-                    left_ptr.right=children[x]
-                    
-                    left_ptr=children[x]
-                    
-                    # null the parents out
-                    children[x].parent=None
-                    
-                self.min_node=h.root_head
-                
-                if z==z.right:
-                    h.min_node=h.root_head = None
-                else:
-                    min_node=z.right
-                    self.consolidate()
-                
-                
-
-function consolidate():
-        
-        A = [None] * int(math.log(self.total_nodes) * 2 )
-        nodes = [w for w in self.iterate(self.root_head)]
-        
-        for x in range(0,len(nodes)):
-            w=nodes[x]            
-            d=w.degree
-            
-            while A[d] != None:
-                y=A[d]
-                
-                if x.key > y.key:
-                    # swap with x and y to ensure x is always the parent and y is the child
-                    # to write lesser code and more systematic
-                    temp=x
-                    x=y
-                    y=temp
-                    
-                self.heap_link(y,x)
-                A[d]=None
-                d+=1
-            A[d]=x
-            
-            # finding new min node
-            # we iterate through A
-            for x in range(0,len(A)):
-                if A[x] != None:
-                    # check their key is smaller than the min_node key
-                    if A[x].key < self.min_node.key:
-                        self.min_node =A[x]
-                    
-                    
-
- ```
- ## Decrease Key and Delete Key in Fibonacci Heap
- 
- 
- The 
- ```
- function decrease_key(x,k):
-        # k is the value to be updated in the node, must be lower since it's min heap order
-        if k > x.key:
-            return None
-        
-        x.key=k
-        
-        y=x.parent
-        
-        if y != None and x.key > y.key:
-            self.cut(x,y)
-            self.cascading_cut(y)
-            
-            
-        
-        
- 
- 
- function cut(x,y):
-        # y is the parent , xi is the child
-        self.remove_from_child_list(y,x)
-        y.degree-=1
-        self.merge_with_root_list(x)
-        x.parent=None
-        x.mark=False
-        
-        
- function cascading_cut(self,y):
-        z=y.parent
-        if z != None:
-            if y.mark==False:
-                y.mark=True
-            else:
-                self.cut(y,z)
-                self.cascading_cut(z)
-        
- 
- ```
  ```
  # Helper function
                     
@@ -771,12 +566,239 @@ function remove_from_child_list(parent,node):
         # None<-->3
         node.left.right=node.right
         node.right.left=node.left
-                
-        
-                
-                
-                
-                    
-                    
+                              
 ```
 
+
+
+### Creation  and Insertion
+
+To insert with first have to create a singleton tree, which is the creation step, to insert this singleton tree we add to left of min pointer. The pseduocode below explains it.
+
+![Fib Insert](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/fib_insert.PNG)
+
+
+```
+# Basic representation of the overall FH (Fibonacci Heap)
+class FibonnacciHeap(object):
+       def __init__():
+        self.root_list,self.min_node=None,None
+        self.total_nodes=0
+```
+
+```
+# merge to the left of the min value in the root list
+
+function insert(key,value):
+    # creation of singleton node
+    n=self.Node(key,value)
+    n.left=n.right=n
+    n.parent=None
+    n.child=None
+    n.mark=False
+    
+    # if Node is present 
+    if self.root_head==None:
+        self.root_head=n
+    else:
+        self.merge_with_root_list(n)
+        
+    if n.key < min_node.key:
+        self.min_node=n
+    self.total_nodes+=1
+    
+    return n
+```     
+
+### Union of Fibonacci Heap
+
+Here we concatenate 2 fibonacci heap where root list are circularly doubly link list. Take a look at the pseudocode below.
+
+
+```
+# concatenate the fb heaps with its root list like usual
+# since its a fibonacci heap keep in mind that we have doubly link list
+
+function merge_fh(h1,h2):
+    h2.root_head.left.right=h1.root_head
+    h1.root_head.left=h2.root_head.left
+    h1.root_head.left.right=h2.root_head
+    h2.root_head.left=h1.root_head.left
+    
+    
+    if h1.min_node > h2.min_node:
+        h1.min_node=h2.min_node
+        
+    h1.total_nodes=h1.total_node+h2.total_nodes
+    
+    return h1
+```
+
+### Delete Minimum In Fibonacci Heap
+
+Here there are 2 things we will do, 
+
+1. Delete the min and concatenate its children into root list.
+2. Consolidate trees so that no two roots have the same degree.
+
+
+![Extract Min](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/fib_extract_min.PNG)
+![Extract Min 2](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/fib_extract_min_2.PNG)
+
+```
+function iterate(self,head):
+    # if we return back to the head due to it being doubly linked list we break out of it
+    # mean while we collect its children and return it in the form a generator like (mutiple returns) using the yield keyword
+    node = stop= head 
+    flag=False
+    
+    while node != stop and flag == False:
+        if node == stop:
+            flag=True
+        yield node
+        
+        node=node.right
+        
+```    
+
+``` 
+
+function extract_min(h):
+        z= h.min_node
+        
+        if z != None:
+            if z.child != None:
+                # here we attach child to the root list
+                children=[ x for x in self.iterate(z.child)]
+                
+                # place left and right marker
+                left_ptr=h.min_node.left
+                right_ptr=h.min_node.right
+                
+                # remove the min but keep the min_node pointer pointing to it
+                left_ptr.right=right_ptr
+                right_ptr.left=left_ptr
+                
+                for x in range(len(children)):
+                
+                    children[x].right=right_ptr
+                    right_ptr.left=children[x]
+                    children[x].left=left_ptr
+                    left_ptr.right=children[x]
+                    
+                    left_ptr=children[x]
+                    
+                    # null the parents out
+                    children[x].parent=None
+                    
+                self.min_node=h.root_head
+                
+                if z==z.right:
+                    h.min_node=h.root_head = None
+                else:
+                    min_node=z.right
+                    self.consolidate()
+                
+                
+
+function consolidate():
+        base=1.1618 <--- Golden ratio
+        A = [None] * int(math.log(self.total_nodes,base) +1 ) # can also be done with log(self.total_nodes)*2 which is usnig natural log
+        nodes = [w for w in self.iterate(self.root_head)]
+        
+        for x in range(0,len(nodes)):
+            w=nodes[x]            
+            d=w.degree
+            
+            while A[d] != None:
+                y=A[d]
+                
+                if x.key > y.key:
+                    # swap with x and y to ensure x is always the parent and y is the child
+                    # to write lesser code and more systematic
+                    temp=x
+                    x=y
+                    y=temp
+                    
+                self.heap_link(y,x)
+                A[d]=None
+                d+=1
+            A[d]=x
+            
+            # finding new min node
+            # we iterate through A
+            for x in range(0,len(A)):
+                if A[x] != None:
+                    # check their key is smaller than the min_node key
+                    if A[x].key < self.min_node.key:
+                        self.min_node =A[x]
+                    
+                    
+
+ ```
+ ## Decrease Key and Delete Key in Fibonacci Heap
+ 
+Base on the pseudocode The decrease key is done by rejecting anything more than the given key of the node. The mark attributes in the nodes are used to achieve dessired time bounds. 
+
+
+For node x say for example somethings have occured such as :
+
+1.
+
+
+
+As soon as the second 
+ 
+ ![Fib Decrease Key](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/fib_decrease_key.PNG)
+ 
+ ```
+ function decrease_key(x,k):
+        # k is the value to be updated in the node, must be lower since it's min heap order
+        if k > x.key:
+            return None
+        
+        x.key=k
+        
+        y=x.parent
+        
+        if y != None and x.key > y.key:
+            self.cut(x,y)
+            self.cascading_cut(y)    
+            
+        if x.key < self.min_node.key:
+            self.min_node=x
+ 
+ 
+ function cut(x,y):
+        # y is the parent , xi is the child
+        self.remove_from_child_list(y,x)
+        y.degree-=1
+        self.merge_with_root_list(x)
+        x.parent=None
+        x.mark=False
+        
+        
+ function cascading_cut(self,y):
+        z=y.parent
+        if z != None:
+            if y.mark==False:
+                y.mark=True
+            else:
+                self.cut(y,z)
+                self.cascading_cut(z)
+        
+ 
+ ```
+ 
+ To find out why decrease key only takes O(1) complexity we look at the change in potential. 
+ 
+ We define the potential function as sigma = num.roots+2*(num.marked_nodes)
+ 
+Operation  | Complexity
+------------ | -------------
+Decrease-Key | O(1)
+Insert | O(1)
+Extract_Min | O(log(N))
+
+
+A great video to find out more about [Binomial Heaps](https://www.youtube.com/watch?v=FMAG0aunrmM&ab_channel=FoundationsofDataScience) and [Fibonacci Heaps](https://www.youtube.com/watch?v=fRpsjKCfQjE&ab_channel=FoundationsofDataScience). Check out more about the [Amortized Complexity Analysis](https://www.youtube.com/watch?v=fRpsjKCfQjE&ab_channel=FoundationsofDataScience) of the fibonnacci heap.
