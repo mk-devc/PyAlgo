@@ -425,20 +425,232 @@ A binomial heap is implemented as a set of binomial trees (compare with a binary
 1.A binomial tree of order 0 is a single node
 2.A binomial tree of order k has a root node whose children are roots of binomial trees of orders k-1, k-2, ..., 2, 1, 0 (in this order). -- Wikipedia
 
+Here we take a look at 2 distinctions, one is **binomial tree** and **binomial heap**. A binomial tree is a tree a which has a root of a node with children. A binomial heap consist of many binomial trees.
+
+
+## Binomial Trees and it's structure
+
+A binomial tree B<sub>k</sub> is detailed as below:
+
+1. B<sub>0</sub> is one node
+2. B<sub>k</sub> is a pair of or a combination of 2 B<sub>k-1</sub> where the root of one becomes the left most child of the other. This only happens when we have k>=1 only as B<sub>0</sub> only has 1 node.
+3. With the above said, when combining them we will have a min heap property. So the root with the smallest value tree will be the root and the left most child will be the tree witht the larger root
+
+
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Binomial_Trees.svg/1024px-Binomial_Trees.svg.png)
 
+From the image we can see that B<sub>1</sub> has 2 B<sub>0</sub> and some goes for B<sub>3</sub> which has 2 B<sub>2</sub>.
 
-## Binomial Heap Structure
+Here we can see the structural properties of the Binomial trees.
 
-1.Each binomial tree in a heap obeys the minimum-heap property: the key of a node is greater than or equal to the key of its parent. ( Could be a max heap if needed, but by convention will move forward with
-min heap )
-
-2.There can be at most one binomial tree for each order, including zero order.
-
-For point 1, as we discussed it uses the root of each binomial tree contains the smallst key.
+1. There are 2^k nodes for a tree.
+2. The height of the tree is k
+3. There are exactly <sup>k</sup>C<sub>i</sub> nodes at depth i =0,1,2,...k. Check out [permutation and combinatons](https://www.mathsisfun.com/combinatorics/combinations-permutations.html) to see what's it about. This is why it's called binomial heap due to the binomial coefficient or also known as pascal triangle.
+4. The root degree has degree k which is largest compared to the other node is the tree. Root is numbered from left child to right child by k-1 , k-2...0. Which means child at k-1 has a degree of k-1. for subtree B<sub>k-1</sub>.
 
 
-COmplexity of Binomial H
+
+
+## Binomial Heap and it's structure
+
+Binomial heap is collection of binomial trees that fits the following properties:
+
+1. No 2 or more binomial trees in the root list ( link of trees connected by the root of each binomial tree ) have the same degree.
+2. Each node has a key
+3. Each satisifies the min heap property in this case.
+4. Degree of each root in the root list in connected in increasing order.
+
+
+![binomial heap](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.yiQNnCcdGIkCmpPWhMT-kwHaCg%26pid%3DApi&f=1)
+
+We can see the nodes connected in the straight link from the root pointer represents the root list. The degree of the roots are connected in increasing order. Same goes for the children in the root list.
+
+## Binomial Heap Representation
+
+Each node N has the variables given.
+
+1. a variable that stores its key
+2. a variable d that stores the degree n
+3. pointer P[N] points to parent of N
+4. pointer Child[N] points to left most child
+5. Pointer sibling[N] or next[N] that point to the right sibling of N
+
+
+
+![bh1](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/bh1.PNG)
+
+We can see that from the image given how the variables in the node is represented. Take a look at the pseudocode for the Node class use to create the node object.
+
+```
+class Node:
+    function(key=None,val=None):
+        self.degree=0
+        self.child=self.next=self.parent=None
+        self.key=key
+        self.val=val
+        
+```
+
+## Binomial Heap Find Minimum 
+
+This operation is straight forward as we look at the root list to identify the needed minimum value. This function returns a pointer to the minimum root node.
+
+```
+function binomial_min_key(h):
+        y=None
+        x=self.head # from the binomial class
+        min=x
+        x=x.next
+        while x != None:
+            if x.key < min.key:
+                min=x
+            x=x.next
+        return min
+        
+        
+```  
+
+Complexity takes about O(log(n))
+
+## Binomial Heap Union
+
+The image below show the process of uniting the 2 binomial heaps together, we would need 2 phases and that is the merging of the binomial heaps and union of the binomial heaps.
+Merging is when we concatenate the 2 binomial heap together in sorted degree order ( increasing order ). In order for this to be done, we need the aid of the helper methods which is link which will take the root of the lesser key value to be the root and the key which is larger to be the left child.
+
+Here we look at a few cases such that is needed when union takes place.
+
+Case 1: When degree of x(cur as shown in the pseudocode) is not equal to the next degree we just move to the next node.We do not need to do anything as we only need to unite those of the same degree
+Case 2:When x is the first of three roots of equal degree, that is, when degree[x]=degree[x.next]=degree[x.next.next]. Here we move the pointers forward by one position down like in case 1, we then perform a case 3 and 4 ( look below for furhter explanation on case 3 and case 4 )
+
+For both case 3 and 4 occurs when the first 2 degree are the same, degree[x]=degree[x.next]!=degree[x.next.next] the only difference between case 3 and case 4 is that which key gets chosen to be the root. Of course the lesser one.
+
+Case 3:  With Case we link x with x.next, in this case x.key <= x.next.key so we make x the parent and x.next the left child.
+Case 4:  The opposite of case 3, where x.next.key is the smaller key and x.key is the larger key we make x.next.key the root while making x.key the left child 
+
+Take a look at the image below on how performing union on 2 binomial heaps.
+
+![bh_union](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/bh_merge_union.PNG)
+![bh_union](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/bh_merge_union_1.PNG)
+
+Uniting 2 binomial heap is used as a subroutine in most other operations. This procedure repeatedly links binomial trees whose roots have the same degree. Here we first take at the link implementation were x becomes the parent and
+```
+function binomial_link(y,x):
+        #y becomes the child and x is the soon to be parent
+        y.parent=x
+        y.next=x.child
+        x.child=y
+        x.degree+=1
+     
+     
+```
+
+This pseudocode unites both binomial heaps together and will return the resulting heap. Before performing the function union we do the merge of the 2 binomial heap. This is done to become a singly linked list root list in sorted degree increasing order. There wil only be about about 2 trees with the same degree but not more in this case as one of the properties of the binomial heaps is each tree has a unique degree and it is not similar to the other in the binomial tree. If this is not the case then we might not be dealing with a binomial heap.
+
+
+
+```
+
+function binomial_merge_root(h1,h2):
+        if not h1:
+            return h2
+        if not h2:
+            return h2
+        h=none    
+        if h1.degree < h2.degree:
+            h=h1
+            h1=h1.next
+        else:
+            h=h2
+            h2=h2.next
+         t=h #
+         while h1 != None and h2 !=None:
+                if h1.degree < h2.degree:
+                    t.next=h1
+                    h1=h1.next
+                else:
+                    t.next=h2
+                    h2=h2.next
+                t.next
+                
+         if h2 == None:
+                t.next=h1
+         else:
+                t.next=h2
+                
+         return h
+```
+ 
+ 
+Here we perform the union operaton after the merge has been done. 
+
+```
+function binomial_union(h1,h2):
+        h=Node()
+        head=binomial_merge_root(h1,h2)
+        h1,h2=None,None # free memory
+        if head == None:
+            return head
+        
+        prev=None
+        cur=head
+        next=cur.next
+        
+        while cur.next !=None:
+                if (cur.degree != next.degree) or ( next.next != None and next.next.degree == cur.degree):
+                    #  Here we have 3 cases, we would want combine both when 
+                    #  1. 2 trees together have the same degree and the next pointer to the later tree has a different degree and its not a None we break to the 
+                    #     to the other condition to perform merge
+                    #  2. 2 trees together have the same degree and the next pointer to the later tree has a same degree we move the pointer to reach to the end 
+                    #     till the degree next to the later of the 2 trees has a different degree then we go to next condition to merge.
+                    #  3. if 2 adjacent trees have different degree and the next degree has a different degree we proceed to skip by moving the nodes.
+                    prev=cur
+                    cur=next
+                    
+                elif cur.key <= next.key:
+                    # we perform the linking
+                    cur.next=next.next
+                    biomial_link(next,cur)
+                else:
+                    if prev == None:
+                        h = next
+                    else:
+                        prev.next=next
+                        binomial_link(cur,next)
+                        cur=next
+                        
+                
+                next=cur.next
+        
+```
+
+
+
+## Binomial Heap Creation and Insertion
+
+Here it is simple to create a node. The psudocode below takes care of the rest. Insertion we create the node and then insert into the root list and order them by their degree in increasing order.
+
+
+
+```
+function binomial_insert(h,x):
+     h1=BinomialHeap()
+     
+     x.parent=None
+     x.child=None
+     x.degree=0
+     
+     h1.head=x
+     
+     h=self.union(h,h1)
+     
+     return h
+     
+     
+     
+```
+
+## Binomial Heap Minimum Key
+
 
 
 # Fibonacci Heap
@@ -608,7 +820,13 @@ function insert(key,value):
     self.total_nodes+=1
     
     return n
-```     
+   
+```  
+
+
+
+
+## Summary of the Binomial Heap and its complexity
 
 ### Union of Fibonacci Heap
 
@@ -789,6 +1007,9 @@ As soon as the second
         
  
  ```
+ 
+ 
+ ## Summary of the Fibonacci Heap and its Complexity
  
  To find out why decrease key only takes O(1) complexity we look at the change in potential. 
  
