@@ -501,11 +501,14 @@ function binomial_min_key(h):
         x=self.head # from the binomial class
         min=x
         x=x.next
+        min_prev=x
         while x != None:
             if x.key < min.key:
                 min=x
+                min_prev=prev
+            prev=x
             x=x.next
-        return min
+        return min,min_prev
         
         
 ```  
@@ -623,12 +626,9 @@ function binomial_union(h1,h2):
         
 ```
 
-
-
 ## Binomial Heap Creation and Insertion
 
 Here it is simple to create a node. The psudocode below takes care of the rest. Insertion we create the node and then insert into the root list and order them by their degree in increasing order.
-
 
 
 ```
@@ -643,15 +643,122 @@ function binomial_insert(h,x):
      
      h=self.union(h,h1)
      
-     return h
-     
-     
+     return h    
      
 ```
 
-## Binomial Heap Minimum Key
+# Extracting node with Minimum Key
 
+Extracting the minimum from the root is as good as removing the root of the smallest node from the root list. Following the property of as above, left roots are B<sub>k-1<sub> , B<sub>k-2</sub>,...B<sub>0</sub> . We would now want to combine the children of the extracted min node to the root list, however we need to reaarange them in increasing order of its degree as it is one of the properties of the binomial heap( refer above ).
+    
+The image below explains how this works.
+    
+![Extracting Minimum Key](https://github.com/MK-1729/PyAlgo/blob/main/Heap/img/extracting_key.PNG)
+    
+ Here is a pseudocode on the reversing the child list. We use the previous finding min that returns the pointer to the minimum root node.
+    
+```
+ function binomial_extract_min():
+    min_key,min_prev=self.binomial_min_key()
+    
+    reverse_linklist_head=self.binomial_reverse_link_list(min_key.child)
+    
+    min_prev.next=None
+    min_key.child=None
+    
+    h1=BinomialHeap()
+    
+    h1=self.binomial_union(self.h,reverse_linklist_head)
+    
+    return min_key
+    
+function binomial_reverse_link_list(h):
+        # h is the pointer to the first left child of the node
+        if h == None: return None
+        # tail here is the most right hand side of the node of the link list that has been reversed and detached
+        # this will seen with an example below
+        tail=None
+        next=h
+        h.parent=None
+    
+        #   h next                     tail-> None  
+        #    \  \  
+        #     o->o->o->o->None
+        #
+        #tail  (h)     (next)                       
+        #   \    \        \  
+        #   None<--o       o---->o---->o---->None 
+        #
+        #       tail  (next,h)                     
+        #         \       \  
+        #   None<--o       o---->o---->o---->None 
+        #
+        #      tail     (h)   next                 
+        #         \       \     \
+        #   None<--o       o---->o---->o---->None 
+        #
+        #             (tail,h) next                 
+        #                 \     \
+        #   None<--o<------o     o---->o---->None 
+        #
+        #             (tail) (h,next)                 
+        #                 \     \
+        #   None<--o<------o     o---->o---->None 
+        #
+        #  This occurs till we reach the end of the list were the next pointer points to None and we straight away connect that pointer to the previous tail.
+        #  We return the head of the pointer of the reversed link list the tail points to the next node of the reversed link list from the head.
+        #
+        #
+        
+        while h.next != None:
+            # we move the next pointer
+            next=h.next
+            # pointing the net node to the previous node
+            h.next=tail
+            # now we make the the previous node the tail
+            tail=h
+            # make the next node the head
+            h=next
+            # remove the new head parent link
+            h.parent=None
+        h.next=tail
+        return h
+                        
+```
 
+# Decreasing Key
+    
+Decreasing the key is exactly like how you do it for a normal binary heap. First we check if the value is more than the key value in the current node. If it is, we break out of the function as the value is larger.
+    
+```
+function binomial_decreasing_key(h,x,k):
+         if k > x.key:
+                print("key is larger than the current key value")
+                return
+         x.key=k
+         # use y to point to where x is pointing    
+         y=x
+         # point to x parent to find if parent is lesser than child
+         z=y.parent
+         # iterqate 
+         while z != None and y.key < z.key:
+                    self.swap(y,z)
+                    # after bubbling up we point to the current position and z to its current position parents
+                    y=z
+                    z=y.parent
+
+                                           
+ function swap(y,z):
+         temp=y.key
+         y.key=z.key
+         z.key=temp  
+                                           
+         # swap the other values to
+         temp=y.degree
+         y.degree=z.degree
+         z.degree=temp
+                                           
+# Deleting Key in 
 
 # Fibonacci Heap
 
@@ -701,7 +808,7 @@ class Node:
 
 
  ```
- # Helper function
+# Helper function
                     
 function heap_link(y,x):
         # this links the to the root list by removing y which is parent and attaching children to the root list
@@ -826,7 +933,6 @@ function insert(key,value):
 
 
 
-## Summary of the Binomial Heap and its complexity
 
 ### Union of Fibonacci Heap
 
