@@ -384,12 +384,19 @@ SSSP Algortihm       |      O(V+E)      |    O(V)
 
 ## Djikstra
 
-Djikstra is a single source short path algorithm for graphs. However, it cant handle negative value.
+Djikstra is a single source short path algorithm for graphs. However, it cant handle negative value. There are 2 reasons why Djikstra can't handle negative values. The first is that, it calculates the distance wrongly. This is because djikstra algorithm assumes that anything that pops of the min heap is the least accumulative path distance to the node. So just imagine youve got a minimal path to the node you have already visited, then a negative value to that node has an even higher minimal path. This cant be done because the algorithm already assumes that the next path it creates from that node that is visited is already gonna be more than the following node to be visited next ( makes sense if its all positive, negative however suddenly out of no where a higher minimal path emerges , its like planning a flight to another country and in the middle of the flight you find a lot more cheaper flight to the country of your destination). We can view this in an example below. 
+
+![djikstra](https://pencilprogrammer.com/wp-content/uploads/2020/12/Graph-with-negative-weighted-edge.png)
+
+From the image above we can get 
 
 
 Algorithms           | Complexity(Time)
 ---------------------|-----------------
 Djikstra Algortihm   |  O(V+log(E))
+
+
+# Bellman & Ford
 
 ## Prim
 
