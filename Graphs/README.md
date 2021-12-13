@@ -393,16 +393,76 @@ From the image above we can get
 
 Algorithms           | Complexity(Time)
 ---------------------|-----------------
-Djikstra Algortihm   |  O(V+log(E))
+Djikstra Algortihm   |  O(E+log(V))
 
 
 # Bellman & Ford
+
+It is also a single source shortest path algorithm just like SSSP and Djikstra. The only difference between Djikstra and this algorithm is that it can hanlde negative edges and negative cycles. It has also a time complexity of O(EV) which is higher compared to Djikstra's greedy method with complexity O(E+log(V)).
+
+Lets take a look at how negative cycles playout in a graph problem.
+
+
+![bellford](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fkeshiim.github.io%2F2017%2F12%2F21%2Ftranslations-interviews%2Fbellman-ford.gif%3Fraw%3Dtrue&f=1&nofb=1)
+
+
+```
+# n here represents the number of nodes
+# d here is the distance array to each vertice
+# relax the edge V-1 times where V represents the number of vertices and V-1 is the number of edges in the graph
+
+d=[null,null,.....]
+g=graph represented in edge list form ( v, u , weight)
+s=source vertex
+
+function initialize_distance(d,n):
+      for idx,x in enumerate(d):  d[idx]=inf
+
+function bellmanford(g,s,e):
+      d[s]=0
+      
+      for x in V-1:
+          for edge in g.edges:
+            # we relax each edge in the graph, this part since we do not visit the graph in a certain order negative weights could be used.
+            if d[edge.from] + edge.cost < d[edge.to]:
+                d[edge.to]=d[edge.from]+edge.cost
+                
+       
+      for x in V-1:
+          for edge in g.edges
+              # if it is able to relax more this shows there is a negative cycle.
+              if d[edge.from] + edge.cost < d[edge.to]:
+                d[edge.to]=-infinity # to indicate that there is a negative cycle
+                
+```            
+            
+            
+     
+      
+So for this why is it that we need to iterate V-1 over the loop is that to processs the whole distance of the graph. Say for example we had graph below.
+
+
+```
+# weight here points to the next node since its in a straight line, last one will be empty, unless its a self loop.
+         O----->O----->O----->O
+   
+IDX      1      2      3      4
+weight    2     3      5      
+cost     inf    inf    inf    inf
+```
+
+so for the first iteration with all the nodes being a distance to positive infinity, taking the minimum distance from node 1 to node with index 2 will be 2 since the node index 1 has a distance of 0+2. This is lower compared to positive infinity so we sub that into the array d. 
+
+Lets say now it jumps to edge on node index 3 to node index 4, infinity+5 still gives infinity and it is more compared to just positive infinity. So hence it will still be infinity. This is why we need to iterate it over again cause the edge list or the adjacency list does not gurantee and order. For example 1 --> 2 --> 3 --> 4 is how the edge list is processed. Maybe certain graphs in that order you will get the shortest distance in the graph. However, this does not apply to all graphs.
+
+
+## Floyd_Warshall
+
 
 ## Prim
 
 ## Kruskal
 
-## Floyd_Warshall
 
 ## Tarjan and Kosaraju Algorithm
 
