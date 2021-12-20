@@ -80,7 +80,7 @@ A subset of edges that are connected in an edge weighted graph which connects al
 
 Application such as networks and transportation use this.
 
-6. Network Flo
+6. Network Flow
 
 How much can we flow through a network or test it's point before the network breaks.Example, how many car could pass through this network tranportation.
 
@@ -148,9 +148,9 @@ while stack.length:
 ```
 Finding Connected Components in a graph by performing a DFS and we tag each node with a component it belongs to. This also could be done using a Union Find data structure.
 
-```
 
-```
+
+
 
 ## BFS
 
@@ -398,13 +398,16 @@ Djikstra Algortihm   |  O(E+log(V))
 
 # Bellman & Ford
 
-It is also a single source shortest path algorithm just like SSSP and Djikstra. The only difference between Djikstra and this algorithm is that it can hanlde negative edges and negative cycles. It has also a time complexity of O(EV) which is higher compared to Djikstra's greedy method with complexity O(E+log(V)).
+It is also a single source shortest path algorithm just like SSSP and Djikstra. The only difference between Djikstra and this algorithm is that it can hanlde negative edges and negative cycles. Thats because each time you find a new weight, it will get lower than the visited node in djikstra, if there is a negative cycles you will keep getting a lower weights which you will not be able to find the shortest path. It has also a time complexity of O(EV) which is higher compared to Djikstra's greedy method with complexity O(E+log(V)). 
 
-Lets take a look at how negative cycles playout in a graph problem.
+[check out about negative weights here.](https://www.javatpoint.com/negative-weight-edges)
+
+Lets take a look at how bellman & ford works out here.
 
 
 ![bellford](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fkeshiim.github.io%2F2017%2F12%2F21%2Ftranslations-interviews%2Fbellman-ford.gif%3Fraw%3Dtrue&f=1&nofb=1)
 
+As you can see there is a diamond like shape above that represents a negative cycle. However this does not affect the algorithm bellman & ford brings.
 
 ```
 # n here represents the number of nodes
@@ -457,6 +460,59 @@ Lets say now it jumps to edge on node index 3 to node index 4, infinity+5 still 
 
 
 ## Floyd_Warshall
+
+Shortest path between all pairs of nodes. The complexity of the is O(V^3) that uses the concept of dynamic programming. The floyd warshall algorithm with this complexity is only recommeneded to be used on smaller graphs as the complexity proves that it isnt efficient in processing larger graphs. This algorithm is similar to Bellman & Ford where it is able to detect negative cycles in the graph. 
+
+Optimal way to use floyd warshall is in a 2D matrix adjacency matrix like the one represented below. As we can see the diagonal is 0 cause there is no self loops. The part where it is marked as X or could be Infinity shows there is no connection between those 2 distinct nodes.
+
+![2D Matrix](https://ds055uzetaobb.cloudfront.net/brioche/uploads/OgxYZ1fX2o-floyd-warshall-problem2.png?width=1200)
+
+
+The idea behind floyd warshall is to build up all intermediate routes between nodes say i and j. This will give us the optimal path. We first might wanna have an an extra variable that holds the information of k ( which is the intermediate node between i and j ). In this way we get to store say from i to k a minimum path and then j to k with a minimum path. If the previous recorded path lets say i to k-1 and k-1 to j is lesser then we remain it. However, think about it having the excess variable in a 3 dimensional array is overkill as we can use i to k or k to j that will be stored in a 2d array with only i to j as the variable as k could either be i or j for ( k to j ) or j ( i to k), where the minimum from one node to another is stored in the 2D array adjacency list.
+
+
+
+Here it is important that k is the most outer for loop. The reason here is that we need to let all the routes i to j pass through all possible k. The one in the inner loops get access the most which is j. The "for" loop for i and j acts to find routes to i and j.[Here is a great video with examples on how Floyd Warshall works.](https://www.youtube.com/watch?v=4OQeCuLYj-4&ab_channel=MichaelSambol)
+
+
+```
+n=size of adjacency matrix
+dp=memo table for All Pairs Shortest Path
+next=to construct path
+
+      
+
+function floydWarshall(m):
+      
+      for k in range(n):
+        for i in range(n):
+          for j in range(n):
+              if dp[i][j]> dp[i][k]+dp[k][j]:
+                 dp[i][j] =  dp[i][k]+dp[k][j]
+
+
+      # negative cycle detection
+      for k in range(n):
+        for i in range(n):
+          for j in range(n):
+              if dp[i][j]> dp[i][k]+dp[k][j]:
+                 dp[i][j] = -infinity
+                 
+
+
+
+
+```
+
+
+
+Looking at this from a Dynamic Programming prespective the problem with all pairs shortest path is to find the minimum weight between 2 pairs of nodes. 
+
+![fw](https://rosettacode.org/mw/images/9/92/Floyd_warshall_graph.gif)
+
+Given dp is the memoization( computer scientist funny way of saying memorization, also known as a look up table to store things like a memo.) table.
+
+The relation to the subproblem is min( 2->1->3,2->3), which is min(4-2,3)=2, so given this example we would wanna have a relation that is min(dp[i][j],dp[i][k]+dp[k][j]).
 
 
 ## Prim
