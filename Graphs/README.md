@@ -407,7 +407,24 @@ Lets take a look at how bellman & ford works out here.
 
 ![bellford](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fkeshiim.github.io%2F2017%2F12%2F21%2Ftranslations-interviews%2Fbellman-ford.gif%3Fraw%3Dtrue&f=1&nofb=1)
 
-As you can see there is a diamond like shape above that represents a negative cycle. However this does not affect the algorithm bellman & ford brings.
+As you can see there is a diamond like shape above that represents a negative cycle. However this does not affect the algorithm bellman & ford brings. The pattern it goes is from each edge list that is iterated with the total number of edges. The reason as we saw is to let the effect of the relaxation take place thoughout the whole graph. As we look into the graphs we can see that the first most left node which is the starting node with a cost of 0 when relaxed adss to 3 to the node its going to. That only happens in the first iteration as the other edges have a weight of infinity + infinity which is not less that the given shortest distance to that node which is infinity. As you see the graph on each iteration, it is clear that progressing in getting the relaxed weight in each iteration. There are some cases if the edges in the edge list or adjacency list is in an order such that at one iteration it is able to get all the shortest paths to each node. We will see this again clearly explanied with an example below.
+
+
+Here we have an example to explained the number of iterations. So for this why is it that we need to iterate V-1 over the loop is that to processs the whole distance of the graph. Say for example we had graph below.
+
+
+```
+# weight here points to the next node since its in a straight line, last one will be empty, unless its a self loop.
+         O----->O----->O----->O
+   
+IDX      1      2      3      4
+weight    2     3      5      
+cost     inf    inf    inf    inf
+```
+
+so for the first iteration with all the nodes being a distance to positive infinity, taking the minimum distance from node 1 to node with index 2 will be 2 since the node index 1 has a distance of 0+2. This is lower compared to positive infinity so we sub that into the array d. 
+
+Lets say now it jumps to edge on node index 3 to node index 4, infinity+5 still gives infinity and it is more compared to just positive infinity. So hence it will still be infinity. This is why we need to iterate it over again cause the edge list or the adjacency list does not gurantee and order. For example 1 --> 2 --> 3 --> 4 is how the edge list is processed. Maybe certain graphs in that order you will get the shortest distance in the graph. However, this does not apply to all graphs.
 
 ```
 # n here represents the number of nodes
@@ -440,23 +457,12 @@ function bellmanford(g,s,e):
 ```            
             
             
-     
+
+Algorithms           | Complexity(Time)
+---------------------|-----------------
+Bellman&Ford         |  O(EV)     
       
-So for this why is it that we need to iterate V-1 over the loop is that to processs the whole distance of the graph. Say for example we had graph below.
 
-
-```
-# weight here points to the next node since its in a straight line, last one will be empty, unless its a self loop.
-         O----->O----->O----->O
-   
-IDX      1      2      3      4
-weight    2     3      5      
-cost     inf    inf    inf    inf
-```
-
-so for the first iteration with all the nodes being a distance to positive infinity, taking the minimum distance from node 1 to node with index 2 will be 2 since the node index 1 has a distance of 0+2. This is lower compared to positive infinity so we sub that into the array d. 
-
-Lets say now it jumps to edge on node index 3 to node index 4, infinity+5 still gives infinity and it is more compared to just positive infinity. So hence it will still be infinity. This is why we need to iterate it over again cause the edge list or the adjacency list does not gurantee and order. For example 1 --> 2 --> 3 --> 4 is how the edge list is processed. Maybe certain graphs in that order you will get the shortest distance in the graph. However, this does not apply to all graphs.
 
 
 ## Floyd_Warshall
@@ -480,16 +486,30 @@ n=size of adjacency matrix
 dp=memo table for All Pairs Shortest Path
 next=to construct path
 
+function setup(m):
+  
+      dp = empty matrix n x n
+      next= empty matrix n x n
       
-
+      for i in range(n):
+          for j in range(n):
+              dp[i][j]=m[i][j]
+              if m[i][j] != infinty:
+                # here we would wanna direct itself to form the path, if infinity there is no path.
+                next[i][j]=j
+                
+                
 function floydWarshall(m):
+      # m is the adjacency matrix
+      # setting up the next and dp 2d array
+      setup(m)
       
       for k in range(n):
         for i in range(n):
           for j in range(n):
               if dp[i][j]> dp[i][k]+dp[k][j]:
                  dp[i][j] =  dp[i][k]+dp[k][j]
-
+                 next[i][j]=next[i][k]
 
       # negative cycle detection
       for k in range(n):
@@ -499,10 +519,22 @@ function floydWarshall(m):
                  dp[i][j] = -infinity
                  
 
-
+     return dp # All pairs shortest path
 
 
 ```
+
+
+We saw there was a next array there we could use it to trace back the shortest path taken.
+
+```
+
+function reconstructPath(start,end):
+          # check if there is a path between the end and the start node
+          if dp[start][end]==-infinity: return path
+          
+          at
+      
 
 
 
